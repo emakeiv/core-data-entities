@@ -1,0 +1,18 @@
+
+services:
+
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes: 
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+  app:
+    build: ./dockerfiles/php
+    volumes: 
+      - ./app:/app
+
+  # postgres
+
+  # redis
+  

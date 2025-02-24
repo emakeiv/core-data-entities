@@ -1,0 +1,14 @@
+1.  docker-compose.yaml
+2.  PHP Dockerfile
+3.  Nginx configuration
+4.  Volume mounting
+5.  A basic application
+6.  PostgreSQL
+7.  Composer
+8.  A development build
+9.  Environment variables
+10. Redis
+11. XDebug
+12. Multi stage builds
+13. Push to container to registry
+14. Github actions 
