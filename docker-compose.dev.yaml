@@ -1,0 +1,53 @@
+
+services:
+
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes: 
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+  app:
+    build:
+      context: .
+      dockerfile: dockerfiles/php/Dockerfile
+    volumes: 
+      - ./app:/var/www/html
+
+  database:
+    image: postgres:17
+    restart: unless-stopped
+    ports:   
+     - 5431:5432             
+    volumes: 
+      - pg_data:/var/lib/postgresql/data
+    environment: 
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=sec-master 
+    networks:
+      - database
+
+  pgadmin:
+    image: dpage/pgadmin4:9
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    volumes:
+      - db_data/:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - database
+
+  # redis
+
+
+volumes:
+  pg_data:
+  db_data:
+
+networks:
+  database:
+    driver: bridge

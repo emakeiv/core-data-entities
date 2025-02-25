@@ -1,0 +1,52 @@
+
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/nginx/Dockerfile
+
+    ports:
+      - "80:80"
+
+  app:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/php/Dockerfile
+
+  database:
+    image: postgres:17
+    restart: always
+          
+    volumes: 
+      - pg_data:/var/lib/postgresql/data
+    environment: 
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=sec-master 
+    networks:
+      - database
+
+  pgadmin:
+    image: dpage/pgadmin4:9
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    volumes:
+      - db_data/:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - database
+
+  # redis
+
+
+volumes:
+  pg_data:
+  db_data:
+
+networks:
+  database:
+    driver: bridge
