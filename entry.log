@@ -3,7 +3,7 @@
 3.  Nginx configuration
 4.  Volume mounting
 5.  A basic application
-6.  PostgreSQL
+6.  PostgreSQL/TimescaleDB
 7.  Composer
 8.  A development build
 9.  Environment variables

@@ -1,3 +1,4 @@
+
 services:
   web:
     image: nginx:latest
@@ -5,6 +6,8 @@ services:
       - "80:80"
     volumes: 
       - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
     networks:
       - backend
 
@@ -16,14 +19,11 @@ services:
       - ./app:/var/www/html
     depends_on:
       - database
-    env_file:
-      - .env
     networks:
       - backend
-      - database
 
   database:
-    image: postgres:17
+    image: timescale/timescaledb:latest-pg17
     restart: unless-stopped
     ports:   
       - 5431:5432             
@@ -32,26 +32,12 @@ services:
     env_file:
       - .env
     networks:
-      - database
-
-  pgadmin:
-    image: dpage/pgadmin4:9
-    restart: unless-stopped
-    env_file:
-      - .env
-    volumes:
-      - db_data:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    networks:
-      - database
-
-volumes:
-  pg_data:
-  db_data:
+      - backend
 
 networks:
   backend:
     driver: bridge
-  database:
-    driver: bridge
+
+volumes:
+  pg_data:
+  db_data:
