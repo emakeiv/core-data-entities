@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-alpine
+FROM php:8.2-fpm-alpine
 
 RUN apk update
 
@@ -33,7 +33,7 @@ COPY ./app/composer.* ./
 RUN composer install --prefer-dist --no-dev --no-scripts --no-progress --no-interaction
 
 # copy application files to the working directory
-COPY ./app .
+COPY ./app ./
 
 # run composer dump-autoload --optimize
 
